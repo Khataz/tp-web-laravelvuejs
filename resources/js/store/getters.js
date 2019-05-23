@@ -7,6 +7,9 @@ let getters = {
     },
     toRemove: state => {
         return state.toRemove
+    },
+    toProgress: state => {
+        return state.toProgress
     }
 }
 export default getters

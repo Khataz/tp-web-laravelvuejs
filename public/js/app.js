@@ -60397,6 +60397,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: "Todo",
@@ -60406,6 +60407,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         removeTodo: function removeTodo(todo) {
             this.$store.commit("CACHE_REMOVED", todo);
             this.$store.dispatch("DELETE_TODO", todo);
+        },
+        progressTodo: function progressTodo(todo) {
+            this.$store.commit("CACHE_PROGRESSED", todo);
+            this.$store.dispatch("PROGRESS_TODO", todo);
         }
     }
 });
@@ -60420,7 +60425,10 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "li",
-    { staticClass: "todo", class: { completed: _vm.todo.completed } },
+    {
+      staticClass: "todo",
+      class: { completed: _vm.todo.completed, progressed: _vm.todo.progressed }
+    },
     [
       _c("div", { staticClass: "view" }, [
         _c("input", {
@@ -60471,6 +60479,15 @@ var render = function() {
           on: {
             click: function($event) {
               return _vm.removeTodo(_vm.todo)
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("button", {
+          staticClass: "progress",
+          on: {
+            click: function($event) {
+              return _vm.progressTodo(_vm.todo)
             }
           }
         })
@@ -60716,9 +60733,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         window.Echo.channel("taskRemoved").listen(".task-removed", function (e) {
             _this.$store.commit("DELETE_TODO", _this.toRemove);
         });
+        window.Echo.channel("taskProgressed").listen(".task-progressed", function (e) {
+            _this.$store.commit("PROGRESS_TODO", _this.toProgress);
+        });
     },
 
-    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_2_vuex__["b" /* mapGetters */])(["newTodo", "toRemove"]))
+    computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_2_vuex__["b" /* mapGetters */])(["newTodo", "toRemove", "toProgress"]))
 });
 
 /***/ }),
@@ -60818,6 +60838,15 @@ var actions = {
         }).catch(function (err) {
             console.log(err);
         });
+    },
+    PROGRESS_TODO: function PROGRESS_TODO(_ref4, todo) {
+        var commit = _ref4.commit;
+
+        axios.put('/api/todos/' + todo.id).then(function (res) {
+            if (res.data === 'progressed') console.log('progressed');
+        }).catch(function (err) {
+            console.log(err);
+        });
     }
 };
 /* harmony default export */ __webpack_exports__["a"] = (actions);
@@ -60834,12 +60863,19 @@ var mutations = {
     CACHE_REMOVED: function CACHE_REMOVED(state, todo) {
         state.toRemove = todo;
     },
+    CACHE_PROGRESSED: function CACHE_PROGRESSED(state, todo) {
+        state.toProgress = todo;
+    },
     GET_TODOS: function GET_TODOS(state, todos) {
         state.todos = todos;
     },
     DELETE_TODO: function DELETE_TODO(state, todo) {
         state.todos.splice(state.todos.indexOf(todo), 1);
         state.toRemove = null;
+    },
+    PROGRESS_TODO: function PROGRESS_TODO(state, todo) {
+        console.log(todo);
+        todo.progressed = true;
     }
 };
 /* harmony default export */ __webpack_exports__["a"] = (mutations);
@@ -60858,6 +60894,9 @@ var getters = {
     },
     toRemove: function toRemove(state) {
         return state.toRemove;
+    },
+    toProgress: function toProgress(state) {
+        return state.toProgress;
     }
 };
 /* harmony default export */ __webpack_exports__["a"] = (getters);
@@ -60870,9 +60909,11 @@ var getters = {
 var state = {
     todos: [],
     toRemove: null,
+    toProgress: null,
     newTodo: {
         title: '',
-        completed: false
+        completed: false,
+        progressed: false
     }
 };
 /* harmony default export */ __webpack_exports__["a"] = (state);

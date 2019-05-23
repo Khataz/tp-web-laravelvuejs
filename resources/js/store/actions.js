@@ -25,6 +25,15 @@ let actions = {
               }).catch(err => {
                   console.log(err)
               })
+      },
+      PROGRESS_TODO({commit}, todo) {
+        axios.put(`/api/todos/${todo.id}`)
+            .then(res => {
+                if (res.data === 'progressed')
+                    console.log('progressed')
+            }).catch(err => {
+                console.log(err)
+            })
       }
   }
   export default actions

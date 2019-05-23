@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Events\TaskCreated;
 use App\Events\TaskRemoved;
+use App\Events\TaskProgressed;
 use App\Task;
+
 class TaskController extends Controller
 {
     //
@@ -25,5 +27,13 @@ class TaskController extends Controller
         broadcast(new TaskRemoved($task));
         Task::destroy($id);
         return response()->json("deleted");
+    }
+
+    public function progress($id){
+        $task = Task::find($id);
+        $task->progressed = true;
+        $task->save();
+        broadcast(new TaskProgressed($task));
+        return response()->json("progressed");
     }
 }

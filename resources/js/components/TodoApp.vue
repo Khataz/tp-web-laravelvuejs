@@ -26,9 +26,12 @@ export default {
     window.Echo.channel("taskRemoved").listen(".task-removed", e => {
         this.$store.commit("DELETE_TODO", this.toRemove);
     });
+    window.Echo.channel("taskProgressed").listen(".task-progressed", e => {
+        this.$store.commit("PROGRESS_TODO", this.toProgress);
+    });
     },
     computed: {
-    ...mapGetters(["newTodo", "toRemove"])
+    ...mapGetters(["newTodo", "toRemove", "toProgress"])
     }
 };
 </script>

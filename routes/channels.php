@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Support\Facades\Broadcast;
 
 /*
 ------------------------------------------------------------------------
@@ -14,5 +15,8 @@ Broadcast::channel('newTask', function(){
     return true;
 });
 Broadcast::channel('taskRemoved', function(){
+    return true;
+});
+Broadcast::channel('taskProgressed', function() {
     return true;
 });

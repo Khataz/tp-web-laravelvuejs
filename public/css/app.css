@@ -230,6 +230,10 @@ body {
   text-decoration: line-through;
 }
 
+.todo-list li.progressed {
+  background-color: burlywood;
+}
+
 .todo-list li .destroy {
   display: none;
   position: absolute;
@@ -255,6 +259,34 @@ body {
 }
 
 .todo-list li:hover .destroy {
+  display: block;
+}
+
+.todo-list li .progress {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 40px;
+  bottom: 0;
+  width: 40px;
+  height: 40px;
+  margin: auto 0;
+  font-size: 30px;
+  color: #33FFB2;
+  margin-bottom: 11px;
+  -webkit-transition: color 0.2s ease-out;
+  transition: color 0.2s ease-out;
+}
+
+.todo-list li .progress:hover {
+  color: #2DE863;
+}
+
+.todo-list li .progress:after {
+  content: '!';
+}
+
+.todo-list li:hover .progress {
   display: block;
 }
 

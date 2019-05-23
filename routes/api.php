@@ -16,3 +16,4 @@ use Illuminate\Http\Request;
 Route::get('todos','TaskController@fetchAll');
 Route::post('todos','TaskController@store');
 Route::delete('todos/{id}','TaskController@delete');
+Route::put('/todos/{id}','TaskController@progress');
